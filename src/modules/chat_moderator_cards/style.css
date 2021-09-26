@@ -83,7 +83,7 @@
     }
 
     /* Prevent Message Delete Link */
-    .chat-line__message--deleted > a {
+    .message--deleted > a {
       pointer-events: none;
     }
   }

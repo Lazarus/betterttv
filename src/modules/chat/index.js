@@ -32,6 +32,10 @@ function formatChatUser(message) {
     return null;
   }
 
+  return {
+    displayName: message.children[3].innerText,
+  };
+
   const {user} = message;
 
   let {badges} = message;
@@ -67,7 +71,8 @@ function hasNonASCII(message) {
 }
 
 function getMessagePartsFromMessageElement($message) {
-  return $message.find('span[data-a-target="chat-message-text"]');
+  // return $message.find('span[data-a-target="chat-message-text"]');
+  return $message.find('.messagesMessage span.message');
 }
 
 class ChatModule {
@@ -137,6 +142,7 @@ class ChatModule {
 
   messageReplacer($message, user) {
     const tokens = $message.contents();
+    console.log({$message, tokens});
     let cappedEmoteCount = 0;
     for (let i = 0; i < tokens.length; i++) {
       const node = tokens[i];
@@ -158,12 +164,12 @@ class ChatModule {
           continue;
         }
 
-        const steamJoinLink = part.match(STEAM_LOBBY_JOIN_REGEX);
-        if (steamJoinLink) {
-          parts[j] = steamLobbyJoinTemplate(steamJoinLink[0]);
-          modified = true;
-          continue;
-        }
+        // const steamJoinLink = part.match(STEAM_LOBBY_JOIN_REGEX);
+        // if (steamJoinLink) {
+        //   parts[j] = steamLobbyJoinTemplate(steamJoinLink[0]);
+        //   modified = true;
+        //   continue;
+        // }
         const emote =
           emotes.getEligibleEmote(part, user) ||
           emotes.getEligibleEmote(part.replace(EMOTE_STRIP_SYMBOLS_REGEX, ''), user);
@@ -183,19 +189,21 @@ class ChatModule {
         const span = document.createElement('span');
         span.className = 'bttv-message-container';
         span.innerHTML = parts.join(' ');
-        node.parentNode.replaceChild(span, node);
+        node.replaceWith(span);
       }
     }
   }
 
   messageParser($element, messageObj) {
     if ($element[0].__bttvParsed) return;
+    if (messageObj.tagName !== 'LI') return;
 
     splitChat.render($element);
 
     const user = formatChatUser(messageObj);
     if (!user) return;
 
+    /*
     const color = this.calculateColor(user.color);
     const $from = $element.find('.chat-author__display-name,.chat-author__intl-login');
     $from.css('color', color);
@@ -233,6 +241,7 @@ class ChatModule {
         $modIcons.remove();
       }
     }
+    */
 
     this.messageReplacer(getMessagePartsFromMessageElement($element), user);
 

@@ -4,7 +4,7 @@ const VERSION = process.env.EXT_VER;
 const {console} = window;
 
 function log(type, ...args) {
-  if (!console || !storage.get('consoleLog')) return;
+  if (!console) return;// || !storage.get('consoleLog')) return;
   console[type].apply(console, ['BTTV:', ...args]);
 }
 

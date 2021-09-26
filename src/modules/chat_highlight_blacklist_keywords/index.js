@@ -20,7 +20,7 @@ const CHAT_LIST_SELECTOR =
   '.chat-list .chat-scrollable-area__message-container,.chat-list--default .chat-scrollable-area__message-container,.chat-list--other .chat-scrollable-area__message-container';
 const VOD_CHAT_FROM_SELECTOR = '.video-chat__message-author';
 const VOD_CHAT_MESSAGE_SELECTOR = 'div[data-test-selector="comment-message-selector"]';
-const VOD_CHAT_MESSAGE_EMOTE_SELECTOR = '.chat-line__message--emote';
+const VOD_CHAT_MESSAGE_EMOTE_SELECTOR = '.message--emote';
 const PINNED_HIGHLIGHT_ID = 'bttv-pinned-highlight';
 const PINNED_CONTAINER_ID = 'bttv-pin-container';
 const MAXIMUM_PIN_COUNT = 10;
@@ -186,7 +186,7 @@ class ChatHighlightBlacklistKeywordsModule {
     watcher.on('load', () => readRepairKeywords());
     watcher.on('load.chat', () => this.loadChat());
     watcher.on('load.vod', () => this.loadChat());
-    watcher.on('chat.message', ($message, messageObj) => this.onMessage($message, messageObj));
+    // watcher.on('chat.message', ($message, messageObj) => this.onMessage($message, messageObj));
     watcher.on('vod.message', ($message) => this.onVODMessage($message));
     settings.on(`changed.${SettingIds.BLACKLIST_KEYWORDS}`, computeBlacklistKeywords);
     settings.on(`changed.${SettingIds.HIGHLIGHT_KEYWORDS}`, computeHighlightKeywords);

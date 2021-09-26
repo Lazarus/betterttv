@@ -11,7 +11,7 @@ const VOD_CHAT_CONTAINER = '.qa-vod-chat,.va-vod-chat';
 const CHAT_LIST = '.chat-list,.chat-list--default,.chat-list--other';
 const PLAYER = '.video-player__container';
 const CLIPS_BROADCASTER_INFO = '.clips-broadcaster-info';
-const CHAT_MESSAGE_SELECTOR = '.chat-line__message';
+const CHAT_MESSAGE_SELECTOR = 'li.message';
 
 const PROFILE_IMAGE_GQL_QUERY = `
 query {
@@ -153,39 +153,39 @@ export default {
   },
 
   updateCurrentChannel() {
-    let rv;
+    // let rv;
 
-    const clipsBroadcasterInfo = this.getClipsBroadcasterInfo();
-    if (clipsBroadcasterInfo) {
-      rv = {
-        id: clipsBroadcasterInfo.id,
-        name: clipsBroadcasterInfo.login,
-        displayName: clipsBroadcasterInfo.displayName,
-        avatar: clipsBroadcasterInfo.profileImageURL,
-      };
-    }
+    // const clipsBroadcasterInfo = this.getClipsBroadcasterInfo();
+    // if (clipsBroadcasterInfo) {
+    //   rv = {
+    //     id: clipsBroadcasterInfo.id,
+    //     name: clipsBroadcasterInfo.login,
+    //     displayName: clipsBroadcasterInfo.displayName,
+    //     avatar: clipsBroadcasterInfo.profileImageURL,
+    //   };
+    // }
 
-    const currentChat = this.getCurrentChat();
-    if (currentChat && currentChat.props && currentChat.props.channelID) {
-      const {channelID, channelLogin, channelDisplayName} = currentChat.props;
-      rv = {
-        id: channelID.toString(),
-        name: channelLogin,
-        displayName: channelDisplayName,
-      };
-    }
+    // const currentChat = this.getCurrentChat();
+    // if (currentChat && currentChat.props && currentChat.props.channelID) {
+    // const {channelID, channelLogin, channelDisplayName} = currentChat.props;
+    const rv = {
+      id: '57292293',
+      name: 'ratirl',
+      displayName: 'ratirl',
+    };
+    // }
 
-    const currentVodChat = this.getCurrentVodChat();
-    if (currentVodChat && currentVodChat.props && currentVodChat.props.data && currentVodChat.props.data.video) {
-      const {
-        owner: {id, login},
-      } = currentVodChat.props.data.video;
-      rv = {
-        id: id.toString(),
-        name: login,
-        displayName: login,
-      };
-    }
+    // const currentVodChat = this.getCurrentVodChat();
+    // if (currentVodChat && currentVodChat.props && currentVodChat.props.data && currentVodChat.props.data.video) {
+    //   const {
+    //     owner: {id, login},
+    //   } = currentVodChat.props.data.video;
+    //   rv = {
+    //     id: id.toString(),
+    //     name: login,
+    //     displayName: login,
+    //   };
+    // }
 
     if (rv != null) {
       setCurrentChannel({provider: 'twitch', ...rv});
@@ -374,12 +374,7 @@ export default {
   },
 
   getChatMessageObject(element) {
-    let msgObject;
-    try {
-      msgObject = getReactInstance(element).return.stateNode.props.message;
-    } catch (_) {}
-
-    return msgObject;
+    return element;
   },
 
   getConversationMessageObject(element) {
@@ -506,6 +501,8 @@ export default {
         message: this.getChatMessageObject(element),
         outerHTML: element.outerHTML,
       }));
+
+    console.dir({messages: messages});
 
     if (name) {
       messages = messages.filter(({message}) => message && message.user && message.user.userLogin === name);

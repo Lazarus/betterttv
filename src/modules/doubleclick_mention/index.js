@@ -4,9 +4,9 @@ import twitch from '../../utils/twitch.js';
 
 const CHAT_ROOM_SELECTOR = '.chat-list,.chat-list--default,.chat-list--other';
 const CHAT_TEXT_AREA = '.chat-input textarea';
-const CHAT_LINE_SELECTOR = '.chat-line__message';
+const CHAT_LINE_SELECTOR = '.message';
 const USERNAME_SELECTORS =
-  '.chat-line__message span.chat-author__display-name, .chat-line__message span[data-a-target="chat-message-mention"]';
+  '.message span.chat-author__display-name, .message span[data-a-target="chat-message-mention"]';
 
 function clearSelection() {
   if (document.selection && document.selection.empty) {

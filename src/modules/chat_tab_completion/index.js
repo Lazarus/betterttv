@@ -15,7 +15,7 @@ function normalizedStartsWith(word, prefix) {
 
 class ChatTabcompletionModule {
   constructor() {
-    watcher.on('chat.message', ($el, messageObj) => this.storeUser(messageObj));
+    // watcher.on('chat.message', ($el, messageObj) => this.storeUser(messageObj));
     watcher.on('load.chat', () => this.resetChannelData());
     this.load();
   }

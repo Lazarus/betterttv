@@ -155,6 +155,7 @@ class DOMObserver extends SafeEventEmitter {
 
   on(selector, callback, options) {
     const parsedSelector = parseSelector(selector);
+    console.log({selectors: parsedSelector, original: selector});
 
     const initialNodes = [];
     for (const selectorType of Object.keys(parsedSelector)) {

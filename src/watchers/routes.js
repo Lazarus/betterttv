@@ -20,30 +20,32 @@ const loadPredicates = {
     return !!href && !!twitch.updateCurrentChannel();
   },
   chat: (context) => {
-    if (!twitch.updateCurrentChannel()) return false;
+    // if (!twitch.updateCurrentChannel()) return false;
 
-    if (!$('section[data-test-selector="chat-room-component-layout"]').length) return false;
+    // if (!$('section[data-test-selector="chat-room-component-layout"]').length) return false;
 
-    const lastReference = currentChatReference;
-    const currentChat = twitch.getCurrentChat();
-    if (!currentChat) return false;
+    if (!$('#messages').length) return false;
 
-    let checkReferences = true;
-    if (context && context.forceReload) {
-      if (context.checkReferences === undefined) {
-        context.checkReferences = true;
-      }
-      checkReferences = context.checkReferences;
-      context.checkReferences = false;
-    }
+    // const lastReference = currentChatReference;
+    // const currentChat = twitch.getCurrentChat();
+    // if (!currentChat) return false;
 
-    if (checkReferences) {
-      if (currentChat === lastReference) return false;
-      if (currentChat.props.channelID === currentChatChannelId) return false;
-    }
+    // let checkReferences = true;
+    // if (context && context.forceReload) {
+    //   if (context.checkReferences === undefined) {
+    //     context.checkReferences = true;
+    //   }
+    //   checkReferences = context.checkReferences;
+    //   context.checkReferences = false;
+    // }
 
-    currentChatReference = currentChat;
-    currentChatChannelId = currentChat.props.channelID;
+    // if (checkReferences) {
+    //   if (currentChat === lastReference) return false;
+    //   if (currentChat.props.channelID === currentChatChannelId) return false;
+    // }
+  //57292293
+    // currentChatReference = currentChat;
+    // currentChatChannelId = '57292293';
 
     return true;
   },
@@ -102,6 +104,7 @@ function waitForLoad(type, context = null) {
 }
 
 function getRouteFromPath(path) {
+  return routes.CHAT;
   let route = null;
   for (const name of Object.keys(routeKeysToPaths)) {
     const regex = routeKeysToPaths[name];
@@ -174,7 +177,7 @@ export default function routesWatcher(watcher_) {
   onRouteChange(window.location);
 
   // force reload chat when the input gets recreated (popout open/close)
-  domObserver.on('.chat-input', (node, isConnected) => {
+  domObserver.on('#textEntryEditable', (node, isConnected) => {
     if (!isConnected) return;
 
     twitch.updateCurrentChannel();

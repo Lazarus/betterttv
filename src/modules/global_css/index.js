@@ -51,12 +51,13 @@ class GlobalCSSModule {
 
   loadGlobalCSS() {
     return new Promise((resolve) => {
-      const css = document.createElement('link');
-      css.setAttribute('href', extension.url('betterttv.css', true));
-      css.setAttribute('type', 'text/css');
-      css.setAttribute('rel', 'stylesheet');
-      css.addEventListener('load', () => resolve());
-      $('body').append(css);
+      // const css = document.createElement('link');
+      // css.setAttribute('href', extension.url('build/betterttv.css', true));
+      // css.setAttribute('type', 'text/css');
+      // css.setAttribute('rel', 'stylesheet');
+      // css.addEventListener('load', () => resolve());
+      // $('body').append(css);
+      resolve();
     });
   }
 

@@ -79,7 +79,7 @@ export default async (env, argv) => {
   return {
     devServer: {
       port: PORT,
-      allowedHosts: ['127.0.0.1', '.twitch.tv', '.youtube.com'],
+      allowedHosts: ['127.0.0.1', '.xat.com', '.youtube.com'],
       devMiddleware: {
         writeToDisk: true,
       },
@@ -109,6 +109,7 @@ export default async (env, argv) => {
     },
     output: {
       filename: '[name].js',
+      publicPath: path.resolve('./build'),
       path: path.resolve('./build'),
     },
     module: {

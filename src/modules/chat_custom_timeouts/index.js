@@ -4,7 +4,7 @@ import keyCodes from '../../utils/keycodes.js';
 import twitch from '../../utils/twitch.js';
 
 const CHAT_ROOM_SELECTOR = 'section[data-test-selector="chat-room-component-layout"]';
-const CHAT_LINE_SELECTOR = '.chat-line__message';
+const CHAT_LINE_SELECTOR = '.message';
 const CHAT_LINE_USERNAME_SELECTOR = `${CHAT_LINE_SELECTOR} .chat-line__username`;
 const CUSTOM_TIMEOUT_ID = 'bttv-custom-timeout-contain';
 const CUSTOM_TIMEOUT_TEMPLATE = `

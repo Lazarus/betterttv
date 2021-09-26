@@ -44,11 +44,18 @@ export default class Emote {
     `;
 
     return `
-      <div class="bttv-tooltip-wrapper bttv-emote ${categoryClass} ${idClass}">
-        <img src="${html.escape(this.images['1x'])}" srcset="${srcset.join(', ')}" alt="${html.escape(
+      &nbsp;<div class="holder">
+        <div style="display: block;
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        position: absolute;
+        margin-top: -6.5px;
+        margin-left: -5.5px;">    
+          <img src="${html.escape(this.images['1x'])}" srcset="${srcset.join(', ')}" alt="${html.escape(
       this.code
-    )}" class="chat-line__message--emote bttv-emote-image" />
-        <div class="bttv-tooltip bttv-tooltip--up bttv-tooltip--align-center">${balloon}</div>
+    )}" align="top" style="position: absolute;left:0;top:0;height:30px;" />
+          </div>
       </div>
     `;
   }

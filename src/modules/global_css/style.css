@@ -1,6 +1,12 @@
+.bttv-message-container {
+  white-space: normal;
+  display: inline-flex;
+}
+
 .bttv-tooltip-wrapper {
-  display: inline-block;
+  /* display: inline-block; */
   position: relative;
+  margin: 0 0.25em;
 
   &:hover .bttv-tooltip {
     display: block;
