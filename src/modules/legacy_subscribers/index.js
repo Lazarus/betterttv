@@ -30,9 +30,8 @@ class LegacySubscribersModule {
     return user ? user.glow : false;
   }
 
-  hasSubscription(name) {
-    const user = users.get(name);
-    return user ? user.subscribed : false;
+  hasSubscription() {
+    return true;
   }
 }
 

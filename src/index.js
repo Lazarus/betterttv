@@ -1,4 +1,4 @@
-(async (currentScript) => {
+(async () => {
   if (!String.prototype.includes || !Array.prototype.findIndex) return;
   // if (window.location.pathname.endsWith('.html')) return;
   if (!['xat.com'].includes(window.location.hostname) && !window.location.hostname.endsWith('.release.twitch.tv'))
@@ -19,17 +19,14 @@
 
   await import('./utils/sentry.js');
 
-  const {default: extension} = await import('./utils/extension.js');
-  extension.setCurrentScript(currentScript);
-
-  const {default: globalCSS} = await import('./modules/global_css/index.js');
-  const globalCSSLoadPromise = globalCSS.loadGlobalCSS();
+  // const {default: globalCSS} = await import('./modules/global_css/index.js');
+  // const globalCSSLoadPromise = globalCSS.loadGlobalCSS();
 
   const {default: debug} = await import('./utils/debug.js');
   const {default: watcher} = await import('./watcher.js');
 
   // wait until styles load to prevent flashing
-  await globalCSSLoadPromise;
+  // await globalCSSLoadPromise;
 
   // eslint-disable-next-line import/no-unresolved
   await import('./modules/**/index.js');
@@ -45,4 +42,4 @@
       emitLoad: (name) => watcher.emit(`load.${name}`),
     },
   };
-})(document.currentScript);
+})();

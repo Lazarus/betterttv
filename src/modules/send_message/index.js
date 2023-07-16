@@ -2,9 +2,9 @@ import twitch from '../../utils/twitch.js';
 import watcher from '../../watcher.js';
 import debug from '../../utils/debug.js';
 import socketClient from '../../socket-client.js';
-import chatTabCompletion from '../chat_tab_completion/index.js';
-import chatCommands from '../chat_commands/index.js';
-import anonChat from '../anon_chat/index.js';
+// import chatTabCompletion from '../chat_tab_completion/index.js';
+// import chatCommands from '../chat_commands/index.js';
+// import anonChat from '../anon_chat/index.js';
 import emojis from '../emotes/emojis.js';
 import {getCurrentUser} from '../../utils/user.js';
 import {getCurrentChannel} from '../../utils/channel.js';
@@ -29,9 +29,9 @@ class SendState {
 
 let twitchSendMessage;
 const methodList = [
-  (msgObj) => chatTabCompletion.onSendMessage(msgObj),
-  (msgObj) => chatCommands.onSendMessage(msgObj),
-  (msgObj) => anonChat.onSendMessage(msgObj),
+  // (msgObj) => chatTabCompletion.onSendMessage(msgObj),
+  // (msgObj) => chatCommands.onSendMessage(msgObj),
+  // (msgObj) => anonChat.onSendMessage(msgObj),
   (msgObj) => emojis.onSendMessage(msgObj),
 ];
 

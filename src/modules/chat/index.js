@@ -7,15 +7,12 @@ import cdn from '../../utils/cdn.js';
 import html from '../../utils/html.js';
 import settings from '../../settings.js';
 import emotes from '../emotes/index.js';
-import nicknames from '../chat_nicknames/index.js';
-import legacySubscribers from '../legacy_subscribers/index.js';
-import splitChat from '../split_chat/index.js';
+// import splitChat from '../split_chat/index.js';
 import {SettingIds, UsernameFlags} from '../../constants.js';
 import {hasFlag} from '../../utils/flags.js';
 import {getCurrentChannel} from '../../utils/channel.js';
 
 const EMOTE_STRIP_SYMBOLS_REGEX = /(^[~!@#$%^&*()]+|[~!@#$%^&*()]+$)/g;
-const STEAM_LOBBY_JOIN_REGEX = /^steam:\/\/joinlobby\/\d+\/\d+\/\d+$/;
 const EMOTES_TO_CAP = ['567b5b520e984428652809b6'];
 const MAX_EMOTES_WHEN_CAPPED = 10;
 
@@ -25,50 +22,10 @@ const badgeTemplate = (url, description) => `
     <div class="bttv-tooltip bttv-tooltip--up" style="margin-bottom: 0.9rem;">${description}</div>
   </div>
 `;
-const steamLobbyJoinTemplate = (joinLink) => `<a href="${joinLink}">${joinLink}</a>`;
-
-function formatChatUser(message) {
-  if (message == null) {
-    return null;
-  }
-
-  return {
-    displayName: message.children[3].innerText,
-  };
-
-  const {user} = message;
-
-  let {badges} = message;
-  if (badges == null) {
-    badges = {};
-  }
-
-  return {
-    id: user.userID,
-    name: user.userLogin,
-    displayName: user.userDisplayName,
-    color: user.color,
-    mod: Object.prototype.hasOwnProperty.call(badges, 'moderator'),
-    subscriber:
-      Object.prototype.hasOwnProperty.call(badges, 'subscriber') ||
-      Object.prototype.hasOwnProperty.call(badges, 'founder'),
-    badges,
-  };
-}
 
 const staff = new Map();
 const globalBots = ['nightbot', 'moobot'];
 let channelBots = [];
-let asciiOnly = false;
-let subsOnly = false;
-let modsOnly = false;
-
-function hasNonASCII(message) {
-  for (let i = 0; i < message.length; i++) {
-    if (message.charCodeAt(i) > 128) return true;
-  }
-  return false;
-}
 
 function getMessagePartsFromMessageElement($message) {
   // return $message.find('span[data-a-target="chat-message-text"]');
@@ -84,13 +41,8 @@ class ChatModule {
     watcher.on('emotes.updated', (name) => {
       const messages = twitch.getChatMessages(name);
 
-      for (const {message, element} of messages) {
-        const user = formatChatUser(message);
-        if (!user) {
-          continue;
-        }
-
-        this.messageReplacer(getMessagePartsFromMessageElement($(element)), user);
+      for (const {element} of messages) {
+        this.messageReplacer(getMessagePartsFromMessageElement($(element)), undefined);
       }
     });
 
@@ -123,26 +75,14 @@ class ChatModule {
     }
 
     const currentChannel = getCurrentChannel();
-    if (currentChannel && currentChannel.name === 'night' && legacySubscribers.hasSubscription(user.name)) {
+    if (currentChannel && currentChannel.name === 'night') {
       $badgesContainer.append(badgeTemplate(cdn.url('tags/subscriber.png'), 'Subscriber'));
     }
   }
 
-  asciiOnly(enabled) {
-    asciiOnly = enabled;
-  }
-
-  subsOnly(enabled) {
-    subsOnly = enabled;
-  }
-
-  modsOnly(enabled) {
-    modsOnly = enabled;
-  }
-
   messageReplacer($message, user) {
     const tokens = $message.contents();
-    console.log({$message, tokens});
+    // console.log({$message, tokens});
     let cappedEmoteCount = 0;
     for (let i = 0; i < tokens.length; i++) {
       const node = tokens[i];
@@ -198,10 +138,7 @@ class ChatModule {
     if ($element[0].__bttvParsed) return;
     if (messageObj.tagName !== 'LI') return;
 
-    splitChat.render($element);
-
-    const user = formatChatUser(messageObj);
-    if (!user) return;
+    // splitChat.render($element);
 
     /*
     const color = this.calculateColor(user.color);
@@ -243,7 +180,7 @@ class ChatModule {
     }
     */
 
-    this.messageReplacer(getMessagePartsFromMessageElement($element), user);
+    this.messageReplacer(getMessagePartsFromMessageElement($element), undefined);
 
     $element[0].__bttvParsed = true;
   }

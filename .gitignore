@@ -2,3 +2,12 @@ node_modules
 build
 dist
 .vscode
+package.json
+package-lock.json
+manifest.json
+ext/manifest.json
+ext.zip
+ext.crx
+betterttv.pem
+manifest.json
+package.json

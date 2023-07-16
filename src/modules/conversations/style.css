@@ -1,9 +1,0 @@
-.bttv-hide-conversations {
-  button[data-a-target='whisper-box-button'] {
-    display: none !important;
-  }
-
-  .whispers-open-threads {
-    display: none !important;
-  }
-}

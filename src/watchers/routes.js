@@ -6,9 +6,6 @@ import historyObserver from '../observers/history.js';
 
 let watcher;
 let currentPath = '';
-let currentRoute = '';
-let currentChatReference;
-let currentChatChannelId;
 
 const loadPredicates = {
   following: () => !!$('ul[role="tablist"] div[data-test-selector="ACTIVE_TAB_INDICATOR"]').length,
@@ -19,7 +16,7 @@ const loadPredicates = {
       $('.channel-info-content a figure img').attr('src');
     return !!href && !!twitch.updateCurrentChannel();
   },
-  chat: (context) => {
+  chat: () => {
     // if (!twitch.updateCurrentChannel()) return false;
 
     // if (!$('section[data-test-selector="chat-room-component-layout"]').length) return false;
@@ -43,7 +40,6 @@ const loadPredicates = {
     //   if (currentChat === lastReference) return false;
     //   if (currentChat.props.channelID === currentChatChannelId) return false;
     // }
-  //57292293
     // currentChatReference = currentChat;
     // currentChatChannelId = '57292293';
 
@@ -64,18 +60,6 @@ const routes = {
   CHANNEL_SQUAD: 'CHANNEL_SQUAD',
   DASHBOARD: 'DASHBOARD',
   VOD: 'VOD',
-};
-
-const routeKeysToPaths = {
-  [routes.HOMEPAGE]: /^\/$/i,
-  [routes.DIRECTORY_FOLLOWING_LIVE]: /^\/directory\/following\/live$/i,
-  [routes.DIRECTORY_FOLLOWING]: /^\/directory\/following$/i,
-  [routes.DIRECTORY]: /^\/directory/i,
-  [routes.CHAT]: /^(\/popout)?\/[a-z0-9-_]+\/chat$/i,
-  [routes.VOD]: /^(\/videos\/[0-9]+|\/[a-z0-9-_]+\/clip\/[a-z0-9-_]+)$/i,
-  [routes.DASHBOARD]: /^(\/[a-z0-9-_]+\/dashboard|\/u\/[a-z0-9-_]+\/stream-manager)/i,
-  [routes.CHANNEL_SQUAD]: /^\/[a-z0-9-_]+\/squad/i,
-  [routes.CHANNEL]: /^\/[a-z0-9-_]+/i,
 };
 
 function waitForLoad(type, context = null) {
@@ -103,29 +87,14 @@ function waitForLoad(type, context = null) {
     .then(() => watcher.emit('load'));
 }
 
-function getRouteFromPath(path) {
+function getRouteFromPath() {
   return routes.CHAT;
-  let route = null;
-  for (const name of Object.keys(routeKeysToPaths)) {
-    const regex = routeKeysToPaths[name];
-    if (!regex.test(path)) continue;
-    route = name;
-    break;
-  }
-
-  // twitch's embed subdomain only supports channel view
-  if (route === routes.HOMEPAGE && window.location.hostname === 'embed.twitch.tv') {
-    return routes.CHANNEL;
-  }
-
-  return route;
 }
 
 function onRouteChange(location) {
   const lastPath = currentPath;
-  const lastRoute = currentRoute;
   const path = location.pathname;
-  const route = getRouteFromPath(path);
+  const route = getRouteFromPath();
 
   debug.log(`New route: ${location.pathname} as ${route}`);
 
@@ -133,39 +102,9 @@ function onRouteChange(location) {
   watcher.emit('load');
 
   currentPath = path;
-  currentRoute = route;
   if (currentPath === lastPath) return;
 
-  switch (route) {
-    case routes.DIRECTORY_FOLLOWING:
-      if (lastRoute === routes.DIRECTORY_FOLLOWING_LIVE) break;
-      waitForLoad('following').then(() => watcher.emit('load.directory.following'));
-      break;
-    case routes.CHAT:
-      waitForLoad('chat').then(() => watcher.emit('load.chat'));
-      break;
-    case routes.VOD:
-      waitForLoad('vod').then(() => watcher.emit('load.vod'));
-      waitForLoad('player').then(() => watcher.emit('load.player'));
-      break;
-    case routes.CHANNEL_SQUAD:
-      waitForLoad('chat').then(() => watcher.emit('load.chat'));
-      waitForLoad('player').then(() => watcher.emit('load.player'));
-      break;
-    case routes.CHANNEL:
-      waitForLoad('channel').then(() => watcher.emit('load.channel'));
-      waitForLoad('chat').then(() => watcher.emit('load.chat'));
-      waitForLoad('player').then(() => watcher.emit('load.player'));
-      break;
-    case routes.HOMEPAGE:
-      waitForLoad('homepage').then(() => watcher.emit('load.homepage'));
-      break;
-    case routes.DASHBOARD:
-      waitForLoad('chat').then(() => watcher.emit('load.chat'));
-      break;
-    default:
-      break;
-  }
+  waitForLoad('chat').then(() => watcher.emit('load.chat'));
 }
 
 export default function routesWatcher(watcher_) {

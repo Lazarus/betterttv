@@ -192,6 +192,11 @@ export default async (env, argv) => {
     optimization: {
       minimize: PROD,
       minimizer: [
+        (compiler) => {
+          new TerserPlugin({
+            parallel: true,
+          }).apply(compiler);
+        },
         new CssMinimizerPlugin({
           test: /\.css$/,
         }),

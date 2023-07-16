@@ -33,16 +33,6 @@ export default class Emote {
       srcset.push(`${html.escape(this.images['4x'])} 4x`);
     }
 
-    const categoryClass = html.escape(this.category.id);
-    const idClass = `${html.escape(this.category.id)}-emo-${html.escape(this.id)}`;
-    const channelName = this.channel && (this.channel.displayName || this.channel.name);
-
-    const balloon = `
-      ${html.escape(this.code)}<br>
-      ${channelName ? `Channel: ${html.escape(channelName)}<br>` : ''}
-      ${html.escape(this.category.displayName)}
-    `;
-
     return `
       &nbsp;<div class="holder">
         <div style="display: block;

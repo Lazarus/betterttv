@@ -1,6 +1,5 @@
 import globalEmotes from './global-emotes.js';
 import channelEmotes from './channel-emotes.js';
-import personalEmotes from './personal-emotes.js';
 import emojis from './emojis.js';
 import frankerfacezGlobalEmotes from '../frankerfacez/global-emotes.js';
 import frankerfacezChannelEmotes from '../frankerfacez/channel-emotes.js';
@@ -12,14 +11,7 @@ import {getCurrentChannel} from '../../utils/channel.js';
 
 class EmotesModule {
   constructor() {
-    this.emoteCategories = [
-      personalEmotes,
-      channelEmotes,
-      globalEmotes,
-      frankerfacezGlobalEmotes,
-      frankerfacezChannelEmotes,
-      emojis,
-    ];
+    this.emoteCategories = [channelEmotes, globalEmotes, frankerfacezGlobalEmotes, frankerfacezChannelEmotes, emojis];
   }
 
   getEmotes(categoryFilter = []) {

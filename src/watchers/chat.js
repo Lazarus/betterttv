@@ -60,7 +60,7 @@ export default function chatWatcher(watcher_) {
   domObserver.on('.message', (node, isConnected) => {
     if (node.tagName !== 'LI') return;
 
-    console.log('new msg');
+    // console.log('new msg');
     if (!isConnected) return;
 
     const msgObject = twitch.getChatMessageObject(node);
